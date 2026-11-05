@@ -24,6 +24,36 @@ HTTP API; see `docs/api.md`), M3 (LLM adapter, Interpreter, Writer, stored
 consultations) M4 (Consult UI in Angular) and M5 (catalog maintenance and capture) and M6 (discussions) are done (release v0.1.0); the next milestone is not defined yet. Start with `docs/vision.md`; implementation order is in `docs/plan.md`. An example catalog
 and executable scenarios live in `catalog/` and `scenarios/`.
 
+## Screenshots
+
+Taken from a demo instance with the fictional example catalog (`catalog/`). The Interpreter,
+Writer and Mediator were scripted for the demo, so no language model was called.
+
+**Consult.** A requirement is read into facts and building blocks; open questions say what they
+change, and nothing is ranked.
+
+![A consultation: the requirement with the understood parts marked, the facts, the building blocks identified and the open questions](docs/images/consult-result.png)
+
+**Catalog health and work queue.** Gaps and drafts found while people consult the catalog wait
+here for an architect to claim them.
+
+![The catalog home: health counters and the work queue](docs/images/catalog-home.png)
+
+**Item page.** Status, connections, usage and the history of every version, with `proposed` and
+`validated` always visible.
+
+![The page of an ABB with its content, connections, usage and history](docs/images/catalog-item.png)
+
+**Rule editor.** A rule is a list of tests, with *Try it* to see its result (true, false or
+indeterminate) before saving.
+
+![The rule editor with the condition builder and the Try it panel](docs/images/rule-editor.png)
+
+**Discussion.** Whoever opens a discussion decides it. The impact radius is computed by the
+catalog; the Mediator only cites facts.
+
+![A discussion with the proposal, the impact radius, the Mediator's opening brief and the thread](docs/images/discussion.png)
+
 ## Development
 
 Requires Python >= 3.12 and [uv](https://docs.astral.sh/uv/).

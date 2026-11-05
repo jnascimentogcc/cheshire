@@ -979,6 +979,11 @@ const POLL_MS = 20000;
       gap: var(--space-2);
       align-items: center;
     }
+    /* The template drops whitespace between elements, so neighbours need a margin. */
+    .meta > .badge,
+    li > span.hint {
+      margin-inline-start: var(--space-2);
+    }
     .dialog {
       border: 1px solid var(--border);
       border-radius: var(--radius);

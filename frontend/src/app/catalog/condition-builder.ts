@@ -97,7 +97,7 @@ import type { Vocabulary } from './models';
     /* One test reads left to right: the attribute, "is one of", its values, then removal. */
     .row {
       display: grid;
-      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr) auto;
+      grid-template-columns: minmax(11rem, 13rem) minmax(0, 1fr);
       gap: var(--space-2) var(--space-5);
       align-items: start;
       width: 100%;
@@ -110,6 +110,8 @@ import type { Vocabulary } from './models';
       padding: 0;
       margin: 0;
       min-width: 0;
+      grid-column: 2;
+      grid-row: 1 / span 2;
     }
     .values .label {
       display: block;
@@ -139,14 +141,18 @@ import type { Vocabulary } from './models';
       outline-offset: 2px;
     }
     .remove {
-      align-self: end;
+      grid-column: 1;
+      grid-row: 2;
+      justify-self: start;
     }
     @media (max-width: 48rem) {
       .row {
         grid-template-columns: minmax(0, 1fr);
       }
+      .values,
       .remove {
-        justify-self: start;
+        grid-column: 1;
+        grid-row: auto;
       }
     }
     .chips {
