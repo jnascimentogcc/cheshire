@@ -47,9 +47,11 @@ The LLM is **not** needed for this script (only guided capture uses it, and that
 2. Follow the gaps link.
    **Expected:** the ABB list opens already filtered to *No solution yet*.
 3. In **Building blocks**, search for `sms`. **Expected:** `channel-sms` is listed.
-4. Clear the search and filter by domain `security`.
-   **Expected:** `audit-log`, `partner-identity` and `secrets-management`. The count line says
-   "Showing 3 of N".
+4. Clear the search and set *Status* to *Proposed*, then to *Validated*.
+   **Expected:** with everything freshly imported, *Proposed* shows "Showing 18 of 18" and
+   *Validated* shows nothing ("Nothing matches."). The *Detail* column shows each block's domain
+   and "cross-cutting" where it applies, for example `audit-log`: `security · cross-cutting · 1 SBB`.
+   (The spec also lists filters by domain and cross-cutting; the list does not have them yet.)
 5. Open **Solutions**.
    **Expected:** listed alphabetically by id (`consent-platform`, `email-service-x`, ...),
    with their catalog state as text. There is no sort by quality and no score.
