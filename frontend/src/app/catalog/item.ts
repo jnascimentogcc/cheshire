@@ -323,6 +323,12 @@ function show(value: unknown): string {
     .meta {
       margin: 0;
     }
+    /* The template drops whitespace between elements, so inline neighbours need a margin:
+       the author after the status badge, the reference kind after a connection id. */
+    td > span.hint,
+    li > span.hint {
+      margin-inline-start: var(--space-2);
+    }
     section {
       margin-bottom: var(--space-4);
       display: flex;
