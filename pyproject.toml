@@ -1,0 +1,88 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "cheshire"
+version = "0.1.0"
+description = "Catalog of ABBs, SBBs and rules that orients requirements to building blocks."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.32",
+    "pydantic[email]>=2.9",
+    "pydantic-settings>=2.6",
+    "jsonschema>=4.23",
+    "psycopg[binary,pool]>=3.2",
+    "structlog>=24.4",
+    "typer>=0.12",
+    "pyyaml>=6.0",
+    "httpx>=0.27",
+    "argon2-cffi>=25.1.0",
+]
+
+[project.scripts]
+cheshire = "cheshire.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "httpx>=0.27",
+    "ruff>=0.7",
+    "mypy>=1.13",
+    "import-linter>=2.1",
+    "types-PyYAML",
+    "types-jsonschema",
+    "hypothesis>=6.170.14",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/cheshire"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# pytest fixtures imported from another test module are used as arguments
+"tests/test_consult_records.py" = ["F811"]
+"tests/test_maintenance.py" = ["F811"]
+"tests/test_interviews.py" = ["F811"]
+"tests/test_discussions.py" = ["F811"]
+
+[tool.mypy]
+strict = true
+python_version = "3.12"
+files = ["src", "tests"]
+plugins = ["pydantic.mypy"]
+
+[tool.importlinter]
+root_package = "cheshire"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "Engine is pure: no agents, providers, db, api, cli"
+type = "forbidden"
+source_modules = ["cheshire.engine"]
+forbidden_modules = [
+    "cheshire.agents",
+    "cheshire.providers",
+    "cheshire.db",
+    "cheshire.api",
+    "cheshire.cli",
+    "psycopg",
+    "fastapi",
+    "uvicorn",
+    "openai",
+    "anthropic",
+    "httpx",
+]

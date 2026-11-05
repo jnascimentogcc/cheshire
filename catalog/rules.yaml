@@ -1,0 +1,106 @@
+rules:
+  # --- notifications ---
+  - id: R-001
+    when: { abb_present: [channel-email, channel-sms], personal_data: [personal, sensitive], message_type: [marketing] }
+    activates: consent-management
+    strength: requires
+    reason: "Marketing messages to people need a legal basis, consent and preferences."
+    status: validated
+  - id: R-002
+    when: { abb_present: [channel-email, channel-sms], personal_data: [personal, sensitive], message_type: [transactional] }
+    activates: consent-management
+    strength: considers
+    reason: "Operational messages still need recipient preferences and opt-out handling."
+    status: validated
+  - id: R-003
+    when: { abb_present: [channel-email, channel-sms] }
+    activates: failure-handling
+    strength: requires
+    reason: "External providers fail; sends must be retried safely without duplicates."
+    status: validated
+  - id: R-004
+    when: { abb_present: [channel-email, channel-sms] }
+    activates: secrets-management
+    strength: requires
+    reason: "Provider credentials must not live in code or configuration."
+    status: validated
+  - id: R-005
+    when: { interaction_mode: [event] }
+    activates: event-messaging
+    strength: requires
+    reason: "An event-triggered flow needs reliable asynchronous event delivery."
+    status: validated
+  - id: R-006
+    when: { abb_present: [channel-email, channel-sms] }
+    activates: template-management
+    strength: considers
+    reason: "Message texts change more often than code."
+    status: validated
+  - id: R-007
+    when: { abb_present: [channel-email, channel-sms] }
+    activates: delivery-log
+    strength: considers
+    reason: "Needed to answer 'I never received it'."
+    status: validated
+  - id: R-009
+    when: { abb_present: [channel-sms] }
+    activates: channel-abstraction
+    strength: considers
+    reason: "SMS is billed per message and providers change; keep the provider replaceable."
+    status: proposed
+
+  # --- batch / partner export ---
+  - id: R-010
+    when: { interaction_mode: [scheduled-batch] }
+    activates: batch-scheduling
+    strength: requires
+    reason: "Scheduled work needs a scheduler with dependency and restart control."
+    status: validated
+  - id: R-011
+    when: { interaction_mode: [scheduled-batch] }
+    activates: job-monitoring
+    strength: requires
+    reason: "Someone must know when a scheduled job did not run."
+    status: validated
+  - id: R-012
+    when: { abb_present: [batch-scheduling] }
+    activates: failure-handling
+    strength: requires
+    reason: "Batches fail midway; reruns must not duplicate or deliver partial files."
+    status: validated
+  - id: R-013
+    when: { abb_present: [report-generation], boundary: [external-partner] }
+    activates: secure-file-transfer
+    strength: requires
+    reason: "Files leaving the organisation need confidentiality and integrity in transit."
+    status: validated
+  - id: R-014
+    when: { abb_present: [report-generation], boundary: [external-partner] }
+    activates: partner-identity
+    strength: requires
+    reason: "The external party must be identified and authorised."
+    status: validated
+  - id: R-015
+    when: { abb_present: [report-generation], boundary: [external-partner] }
+    activates: interface-contract-management
+    strength: requires
+    reason: "Both sides must agree on the file layout and its versions."
+    status: validated
+  - id: R-016
+    when: { abb_present: [report-generation], boundary: [external-partner] }
+    activates: audit-log
+    strength: requires
+    reason: "Exports to third parties must be attributable."
+    status: validated
+  - id: R-017
+    when: { abb_present: [secure-file-transfer] }
+    activates: secrets-management
+    strength: requires
+    reason: "Transfer keys and credentials must be managed."
+    status: validated
+  - id: R-018
+    when: { abb_present: [report-generation], personal_data: [personal, sensitive], boundary: [external-partner] }
+    activates: data-masking
+    strength: considers
+    reason: "Sharing personal data with a third party calls for masking or a data-processing agreement."
+    status: validated

@@ -1,0 +1,106 @@
+# All SBBs are FICTIONAL examples. States are labels, never a ranking.
+sbbs:
+  - id: email-service-x
+    name: "E-mail service X"
+    realises: channel-email
+    state: recommended
+    when_to_choose: "Transactional and bulk e-mail with the corporate sender domain."
+    limitations: "No SMS; templates must be managed elsewhere."
+    characteristics: { delivery_model: saas, data_residency: eu, cost_model: subscription }
+    status: validated
+
+  - id: sms-provider-a
+    name: "SMS provider A"
+    realises: channel-sms
+    state: recommended
+    applies_when: { volume: [low, medium] }
+    not_applies_when: { personal_data: [sensitive] }
+    reason_not_applies: "Contract does not cover sensitive data."
+    when_to_choose: "Low to medium volume SMS with EU data residency."
+    limitations: "Rate limits make it unsuitable for high-volume campaigns."
+    characteristics: { delivery_model: saas, data_residency: eu, cost_model: per-use }
+    status: validated
+
+  - id: sms-provider-b
+    name: "SMS provider B"
+    realises: channel-sms
+    state: prohibited
+    reason_prohibited: "Data processed outside the EU."
+    characteristics: { delivery_model: saas, data_residency: outside-eu, cost_model: per-use }
+    status: validated
+
+  - id: sms-provider-c
+    name: "SMS provider C"
+    realises: channel-sms
+    state: accepted
+    applies_when: { volume: [high] }
+    when_to_choose: "High-volume SMS with bulk pricing."
+    limitations: "Higher integration effort."
+    characteristics: { delivery_model: saas, data_residency: eu, cost_model: subscription }
+    status: validated
+
+  - id: notification-hub
+    name: "Notification hub (internal service)"
+    realises: notification-orchestration
+    state: recommended
+    when_to_choose: "Any customer notification driven by business events."
+    characteristics: { delivery_model: internal-service, data_residency: eu, cost_model: internal-chargeback }
+    status: validated
+
+  - id: consent-platform
+    name: "Consent platform (internal service)"
+    realises: consent-management
+    state: recommended
+    characteristics: { delivery_model: internal-service, data_residency: eu, cost_model: internal-chargeback }
+    status: validated
+
+  - id: secrets-vault
+    name: "Secrets vault"
+    realises: secrets-management
+    state: recommended
+    characteristics: { delivery_model: self-hosted, data_residency: eu, cost_model: fixed }
+    status: validated
+
+  - id: job-scheduler-a
+    name: "Job scheduler A"
+    realises: batch-scheduling
+    state: recommended
+    characteristics: { delivery_model: self-hosted, data_residency: eu, cost_model: fixed }
+    status: validated
+
+  - id: sftp-gateway
+    name: "SFTP gateway"
+    realises: secure-file-transfer
+    state: recommended
+    when_to_choose: "Scheduled file exchange with partners that support SFTP."
+    limitations: "Partner must manage SSH keys."
+    characteristics: { delivery_model: self-hosted, data_residency: eu, cost_model: fixed }
+    status: validated
+
+  - id: managed-file-transfer-b
+    name: "Managed file transfer B"
+    realises: secure-file-transfer
+    state: deprecating
+    when_to_choose: "Existing partner integrations already on it."
+    limitations: "Being phased out; no new integrations planned."
+    characteristics: { delivery_model: saas, data_residency: eu, cost_model: subscription }
+    status: validated
+
+  - id: masking-tool
+    name: "Masking tool"
+    realises: data-masking
+    state: accepted
+    applies_when: { personal_data: [personal, sensitive] }
+    characteristics: { delivery_model: self-hosted, data_residency: eu, cost_model: fixed }
+    status: validated
+
+  - id: audit-service
+    name: "Audit service (internal)"
+    realises: audit-log
+    state: recommended
+    characteristics: { delivery_model: internal-service, data_residency: eu, cost_model: internal-chargeback }
+    status: validated
+
+# Deliberately no SBB for: event-messaging, template-management, delivery-log,
+# channel-abstraction, failure-handling, report-generation, job-monitoring,
+# partner-identity, interface-contract-management  -> these are GAPS.

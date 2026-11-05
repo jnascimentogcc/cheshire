@@ -1,0 +1,58 @@
+# 11 cross-cutting lenses. Used to interview architects and to discover
+# attributes and implicit dependencies. A lens may answer "not applicable".
+lenses:
+  - id: privacy-personal-data
+    name: Privacy and personal data
+    question: "Is personal data involved? Who sees it, on what legal basis, for how long?"
+    feeds_attributes: [personal_data]
+    typical_dependencies: [consent-management, data-masking]
+  - id: regulatory-compliance
+    name: Regulatory compliance
+    question: "Does any regulation or standard apply (GDPR, financial, health, public sector)?"
+    feeds_attributes: [regulation]
+    typical_dependencies: [audit-log]
+  - id: data-retention
+    name: Data retention and lifecycle
+    question: "How long are data kept, when are they deleted, where is the source of truth?"
+    feeds_attributes: [retention]
+    typical_dependencies: []
+  - id: auditability
+    name: Auditability and traceability
+    question: "Must we prove who did what and when?"
+    feeds_attributes: [traceability]
+    typical_dependencies: [audit-log, delivery-log]
+  - id: security-access-control
+    name: Security and access control
+    question: "Who authenticates, who authorises, where are secrets, which data are sensitive?"
+    feeds_attributes: [personal_data, boundary]
+    typical_dependencies: [secrets-management, partner-identity]
+  - id: resilience-continuity
+    name: Resilience and continuity
+    question: "What happens when something fails? Can it degrade? What is lost, and how long can it be down?"
+    feeds_attributes: [criticality]
+    typical_dependencies: [failure-handling]
+  - id: performance-scalability
+    name: Performance and scalability
+    question: "What volume, peaks and acceptable latency?"
+    feeds_attributes: [volume, latency]
+    typical_dependencies: []
+  - id: observability
+    name: Observability
+    question: "How will we know it works or fails?"
+    feeds_attributes: []        # currently drives dependencies only; see docs/decisions.md open questions
+    typical_dependencies: [job-monitoring, delivery-log]
+  - id: operations-support
+    name: Operations and support
+    question: "Who operates it, how is it supported, what is automated?"
+    feeds_attributes: []
+    typical_dependencies: [template-management]
+  - id: integration-interoperability
+    name: Integration and interoperability
+    question: "Which contracts, protocols and versions? Is the operation repeatable without duplicate effects (idempotency)?"
+    feeds_attributes: [interaction_mode, boundary]
+    typical_dependencies: [event-messaging, interface-contract-management]
+  - id: evolution-portability-cost
+    name: Evolution, portability and cost
+    question: "What is the vendor lock-in risk, the running cost, and the exit path?"
+    feeds_attributes: []
+    typical_dependencies: [channel-abstraction]

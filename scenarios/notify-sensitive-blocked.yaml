@@ -1,0 +1,32 @@
+id: notify-sensitive-blocked
+requirement: "When a medical order is shipped, the patient must receive a notification by e-mail and SMS."
+interpreter_output:
+  abbs:
+    - { id: notification-orchestration, span: "receive a notification" }
+    - { id: channel-email, span: "e-mail" }
+    - { id: channel-sms, span: "SMS" }
+  attributes:
+    interaction_mode: { value: event, source: inferred, span: "When a medical order is shipped" }
+    personal_data: { value: sensitive, source: inferred, span: "medical order ... patient" }
+answers:
+  message_type: transactional
+  volume: medium
+expect:
+  abbs:
+    notification-orchestration: { activation: identified, coverage: covered, eligible: [notification-hub] }
+    channel-email: { activation: identified, coverage: covered, eligible: [email-service-x] }
+    channel-sms:
+      activation: identified
+      coverage: blocked
+      excluded:
+        sms-provider-a: not_applies_when
+        sms-provider-b: prohibited
+        sms-provider-c: applies_when_not_met
+    failure-handling: { activation: confirmed, strength: requires, coverage: gap }
+    secrets-management: { activation: confirmed, strength: requires, coverage: covered, eligible: [secrets-vault] }
+    event-messaging: { activation: confirmed, strength: requires, coverage: gap }
+    template-management: { activation: confirmed, strength: considers, coverage: gap }
+    delivery-log: { activation: confirmed, strength: considers, coverage: gap }
+    channel-abstraction: { activation: confirmed, strength: considers, validation: proposed, coverage: gap }
+    consent-management: { activation: confirmed, strength: considers, coverage: covered, eligible: [consent-platform] }
+  pending_questions: []

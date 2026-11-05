@@ -1,0 +1,23 @@
+id: partner-report-export
+requirement: "Export monthly reports to an external partner."
+interpreter_output:
+  abbs:
+    - { id: report-generation, span: "reports" }
+    - { id: batch-scheduling, span: "monthly" }
+  attributes:
+    interaction_mode: { value: scheduled-batch, source: stated, span: "monthly" }
+    boundary: { value: external-partner, source: stated, span: "external partner" }
+answers: {}
+expect:
+  abbs:
+    report-generation: { activation: identified, coverage: gap }
+    batch-scheduling: { activation: identified, strength: requires, coverage: covered, eligible: [job-scheduler-a] }
+    job-monitoring: { activation: confirmed, strength: requires, coverage: gap }
+    failure-handling: { activation: confirmed, strength: requires, coverage: gap }
+    secure-file-transfer: { activation: confirmed, strength: requires, coverage: covered, eligible: [managed-file-transfer-b, sftp-gateway] }
+    partner-identity: { activation: confirmed, strength: requires, coverage: gap }
+    interface-contract-management: { activation: confirmed, strength: requires, coverage: gap }
+    audit-log: { activation: confirmed, strength: requires, coverage: covered, eligible: [audit-service] }
+    secrets-management: { activation: confirmed, strength: requires, coverage: covered, eligible: [secrets-vault] }
+    data-masking: { activation: potential, coverage: conditional, conditional: [masking-tool] }
+  pending_questions: [personal_data]

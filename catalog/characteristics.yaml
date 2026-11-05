@@ -1,0 +1,8 @@
+# Small vocabulary used to describe SBBs so they can be compared without ranking.
+characteristics:
+  - id: delivery_model
+    values: [saas, self-hosted, internal-service]
+  - id: data_residency
+    values: [eu, outside-eu, configurable]
+  - id: cost_model
+    values: [per-use, subscription, fixed, internal-chargeback]

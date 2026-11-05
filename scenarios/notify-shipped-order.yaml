@@ -1,0 +1,28 @@
+id: notify-shipped-order
+requirement: "When an order is shipped, the customer must receive a notification by e-mail and SMS."
+interpreter_output:
+  abbs:
+    - { id: notification-orchestration, span: "receive a notification" }
+    - { id: channel-email, span: "e-mail" }
+    - { id: channel-sms, span: "SMS" }
+  attributes:
+    interaction_mode: { value: event, source: inferred, span: "When an order is shipped" }
+    personal_data: { value: personal, source: inferred, span: "the customer ... e-mail and SMS" }
+answers: {}
+expect:
+  abbs:
+    notification-orchestration: { activation: identified, coverage: covered, eligible: [notification-hub] }
+    channel-email: { activation: identified, coverage: covered, eligible: [email-service-x] }
+    channel-sms:
+      activation: identified
+      coverage: conditional
+      conditional: [sms-provider-a, sms-provider-c]
+      excluded: { sms-provider-b: prohibited }
+    failure-handling: { activation: confirmed, strength: requires, coverage: gap }
+    secrets-management: { activation: confirmed, strength: requires, coverage: covered, eligible: [secrets-vault] }
+    event-messaging: { activation: confirmed, strength: requires, coverage: gap }
+    template-management: { activation: confirmed, strength: considers, coverage: gap }
+    delivery-log: { activation: confirmed, strength: considers, coverage: gap }
+    channel-abstraction: { activation: confirmed, strength: considers, validation: proposed, coverage: gap }
+    consent-management: { activation: potential, coverage: covered, eligible: [consent-platform] }
+  pending_questions: [message_type, volume]

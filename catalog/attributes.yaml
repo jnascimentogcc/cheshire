@@ -1,0 +1,54 @@
+# The attribute <-> lens link is declared on the lens (lenses.yaml, feeds_attributes).
+# Core attributes apply to every requirement. Extension attributes are tied to ABBs.
+# `unknown` is implicit for every attribute.
+attributes:
+  - id: personal_data
+    layer: core
+    values: [none, personal, sensitive]
+    question: "Does this handle data about people? Is any of it sensitive (health, financial, official ID)?"
+  - id: regulation
+    layer: core
+    multi: true
+    values: [gdpr, financial-sector, health, public-sector]   # defined by each organisation
+    question: "Does any regulation or standard apply?"
+    ask_if: { personal_data: [personal, sensitive] }
+  - id: retention
+    layer: core
+    values: [short, medium, long, legal]
+    question: "How long must these data or records be kept?"
+  - id: traceability
+    layer: core
+    values: ["yes", "no"]
+    question: "Must it be provable later who did what and when?"
+  - id: criticality
+    layer: core
+    values: [low, medium, high]
+    question: "If this fails, what is the impact on the business?"
+  - id: volume
+    layer: core
+    values: [low, medium, high]
+    question: "Roughly how many operations?"
+  - id: latency
+    layer: core
+    values: [immediate, minutes, hours-or-more]
+    question: "How much delay is acceptable?"
+  - id: interaction_mode
+    layer: core
+    values: [event, request-response, scheduled-batch, interactive]
+    question: "Is this triggered by an occurrence, by a request, or by a schedule?"
+  - id: boundary
+    layer: core
+    values: [internal, external-partner, public]
+    question: "Who consumes or provides on the other side?"
+
+  # extensions
+  - id: message_type
+    layer: extension
+    applies_to_abbs: [notification-orchestration]
+    values: [transactional, marketing]
+    question: "Are these messages operational (e.g. order updates) or promotional?"
+  - id: file_format
+    layer: extension
+    applies_to_abbs: [secure-file-transfer, report-generation]
+    values: [csv, json, xml, columnar]
+    question: "In which format must the files be delivered?"

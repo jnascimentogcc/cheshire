@@ -1,0 +1,42 @@
+abbs:
+  - { id: notification-orchestration, name: "Notification orchestration", domain: integration, cross_cutting: false,
+      description: "Decides who is notified, through which channel and when, from business triggers.",
+      recognition: ["notify", "alert", "send a message to the customer", "warn"],
+      status: validated }
+  - { id: channel-email, name: "Channel: e-mail", domain: integration, cross_cutting: false,
+      description: "Sending e-mail messages to recipients.", recognition: ["e-mail", "email", "mail"], status: validated }
+  - { id: channel-sms, name: "Channel: SMS", domain: integration, cross_cutting: false,
+      description: "Sending text messages to mobile numbers.", recognition: ["SMS", "text message"], status: validated }
+  - { id: event-messaging, name: "Event-driven messaging", domain: integration, cross_cutting: false,
+      description: "Publishing and consuming business events asynchronously.", recognition: ["when X happens", "event", "triggered by"], status: validated }
+  - { id: template-management, name: "Message template management", domain: application, cross_cutting: false,
+      description: "Authoring and versioning message texts outside code.", recognition: ["message text", "wording"], status: validated }
+  - { id: consent-management, name: "Consent and preference management", domain: data, cross_cutting: false,
+      description: "Recording legal basis, consent and recipient preferences.", recognition: ["opt-in", "opt-out", "consent", "preferences"], status: validated }
+  - { id: delivery-log, name: "Delivery record and status", domain: data, cross_cutting: false,
+      description: "Recording what was sent and its delivery state.", recognition: ["delivered", "proof", "I never received"], status: validated }
+  - { id: channel-abstraction, name: "Channel abstraction", domain: integration, cross_cutting: false,
+      description: "A thin layer that lets a provider be replaced without changing consumers.", recognition: [], status: validated }
+
+  - { id: batch-scheduling, name: "Batch scheduling and orchestration", domain: application, cross_cutting: false,
+      description: "Running jobs on a schedule with dependencies and restart.", recognition: ["monthly", "nightly", "every week", "scheduled"], status: validated }
+  - { id: report-generation, name: "Report generation", domain: application, cross_cutting: false,
+      description: "Producing reports or extracts from data sources.", recognition: ["report", "extract", "export"], status: validated }
+  - { id: secure-file-transfer, name: "Secure file transfer", domain: integration, cross_cutting: false,
+      description: "Delivering files to or from another party with confidentiality and integrity.", recognition: ["send the file", "partner", "SFTP"], status: validated }
+  - { id: partner-identity, name: "External partner identity", domain: security, cross_cutting: false,
+      description: "Identifying and authorising external parties.", recognition: ["partner", "third party"], status: validated }
+  - { id: data-masking, name: "Data masking and anonymisation", domain: data, cross_cutting: false,
+      description: "Hiding or removing personal data before sharing.", recognition: ["anonymise", "mask"], status: validated }
+  - { id: interface-contract-management, name: "Interface contract and schema management", domain: integration, cross_cutting: false,
+      description: "Defining and versioning the shape of exchanged data.", recognition: ["format", "layout", "schema"], status: validated }
+
+  # cross-cutting: recur across requirements
+  - { id: audit-log, name: "Audit log", domain: security, cross_cutting: true,
+      description: "Tamper-evident record of who did what and when.", recognition: ["audit", "who did"], status: validated }
+  - { id: secrets-management, name: "Secrets and key management", domain: security, cross_cutting: true,
+      description: "Storing and rotating credentials and keys.", recognition: ["credentials", "API key"], status: validated }
+  - { id: job-monitoring, name: "Job monitoring and alerting", domain: operations, cross_cutting: true,
+      description: "Knowing whether scheduled work ran and alerting if not.", recognition: ["did it run"], status: validated }
+  - { id: failure-handling, name: "Failure handling, retries and idempotency", domain: integration, cross_cutting: true,
+      description: "Retrying safely without duplicate effects; dead-letter handling.", recognition: ["retry", "failure", "twice"], status: validated }
