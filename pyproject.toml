@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "cheshire"
-version = "0.1.0"
+version = "0.2.0"
 description = "Catalog of ABBs, SBBs and rules that orients requirements to building blocks."
 readme = "README.md"
 requires-python = ">=3.12"
