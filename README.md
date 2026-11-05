@@ -21,7 +21,7 @@ architecture catalog.
 Status: M0 (repository and stack), M1 (catalog loader/validator, rule engine,
 scenario runner) and M2 (PostgreSQL storage, authentication, versioned catalog, import/export,
 HTTP API; see `docs/api.md`), M3 (LLM adapter, Interpreter, Writer, stored
-consultations) M4 (Consult UI in Angular) and M5 (catalog maintenance and capture) and M6 (discussions) are done; M7 is next (see `docs/plan.md`). Start with `docs/vision.md`; implementation order is in `docs/plan.md`. An example catalog
+consultations) M4 (Consult UI in Angular) and M5 (catalog maintenance and capture) and M6 (discussions) are done (release v0.1.0); the next milestone is not defined yet. Start with `docs/vision.md`; implementation order is in `docs/plan.md`. An example catalog
 and executable scenarios live in `catalog/` and `scenarios/`.
 
 ## Development
