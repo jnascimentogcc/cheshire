@@ -2,11 +2,13 @@ import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   OnInit,
   computed,
   inject,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { firstValueFrom } from 'rxjs';
@@ -377,6 +379,7 @@ export class CatalogItemPage implements OnInit {
   private readonly route$ = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly announcer = inject(Announcer);
+  private readonly destroyRef = inject(DestroyRef);
   protected readonly auth = inject(Auth);
   protected readonly prefs = inject(UserPreferences);
 
@@ -424,15 +427,20 @@ export class CatalogItemPage implements OnInit {
   protected readonly raw = computed(() => JSON.stringify(this.data()?.item ?? {}, null, 2));
 
   ngOnInit(): void {
-    const params = this.route$.snapshot.paramMap;
-    const kind = KIND_OF_ROUTE[params.get('kinds') ?? ''];
-    if (!kind) {
-      void this.router.navigate(['/not-found']);
-      return;
-    }
-    this.route.set(ROUTE_OF_KIND[kind]);
-    this.slug.set(params.get('slug') ?? '');
-    void this.load();
+    // The router reuses this page when only the parameters change (a link from one item to
+    // another), so the item is reloaded on every change of parameters, not once.
+    this.route$.paramMap.pipe(takeUntilDestroyed(this.destroyRef)).subscribe((params) => {
+      const kind = KIND_OF_ROUTE[params.get('kinds') ?? ''];
+      if (!kind) {
+        void this.router.navigate(['/not-found']);
+        return;
+      }
+      this.route.set(ROUTE_OF_KIND[kind]);
+      this.slug.set(params.get('slug') ?? '');
+      this.changes.set(null);
+      this.actionProblem.set(null);
+      void this.load();
+    });
   }
 
   protected link(c: Connection): string[] {
