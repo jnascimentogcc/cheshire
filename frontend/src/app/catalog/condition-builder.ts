@@ -33,19 +33,21 @@ import type { Vocabulary } from './models';
           @if (valuesOf(test); as options) {
             <fieldset class="values">
               <legend class="label">{{ 'builder.is_one_of' | transloco }}</legend>
-              @for (v of options; track v) {
-                <label class="check">
-                  <input
-                    type="checkbox"
-                    [checked]="test.values.includes(v)"
-                    (change)="toggleValue(i, v, $any($event.target).checked)"
-                  />
-                  {{ v }}
-                </label>
-              }
+              <div class="pills">
+                @for (v of options; track v) {
+                  <label class="check">
+                    <input
+                      type="checkbox"
+                      [checked]="test.values.includes(v)"
+                      (change)="toggleValue(i, v, $any($event.target).checked)"
+                    />
+                    <span class="mono">{{ v }}</span>
+                  </label>
+                }
+              </div>
             </fieldset>
           }
-          <button type="button" class="btn btn-ghost btn-sm" (click)="removeTest(i)">
+          <button type="button" class="btn btn-ghost btn-sm remove" (click)="removeTest(i)">
             {{ 'builder.remove_test' | transloco }}
           </button>
         </fieldset>
@@ -92,25 +94,60 @@ import type { Vocabulary } from './models';
       gap: var(--space-3);
       align-items: flex-start;
     }
+    /* One test reads left to right: the attribute, "is one of", its values, then removal. */
     .row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-3);
-      align-items: flex-end;
+      display: grid;
+      grid-template-columns: minmax(12rem, 16rem) minmax(0, 1fr) auto;
+      gap: var(--space-2) var(--space-5);
+      align-items: start;
+      width: 100%;
+    }
+    .row .field .input {
       width: 100%;
     }
     .values {
       border: 0;
       padding: 0;
       margin: 0;
+      min-width: 0;
+    }
+    .values .label {
+      display: block;
+      padding: 0;
+      margin-bottom: var(--space-1);
+    }
+    .pills {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--space-1) var(--space-3);
+      gap: var(--space-2);
     }
     .check {
       display: inline-flex;
-      gap: var(--space-1);
+      gap: var(--space-2);
       align-items: center;
+      padding: var(--space-1) var(--space-3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+    }
+    .check:has(input:checked) {
+      background: var(--info-bg);
+      border-color: var(--info-border);
+    }
+    .check:has(input:focus-visible) {
+      outline: 2px solid var(--info);
+      outline-offset: 2px;
+    }
+    .remove {
+      align-self: end;
+    }
+    @media (max-width: 48rem) {
+      .row {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .remove {
+        justify-self: start;
+      }
     }
     .chips {
       list-style: none;
